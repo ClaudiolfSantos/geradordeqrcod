@@ -24,18 +24,18 @@ function App() {
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex flex-col select-none cursor-pointer" onClick={() => window.location.reload()}>
-             {/* Logo Motocar Reproduction */}
-             <div className="flex items-center">
-                <div className="flex flex-col gap-[3px] mr-1.5 pt-1">
-                    <div className="w-5 h-1.5 bg-[#FF0000] -skew-x-12"></div>
-                    <div className="w-5 h-1.5 bg-[#FF0000] -skew-x-12"></div>
-                    <div className="w-5 h-1.5 bg-[#FF0000] -skew-x-12"></div>
-                </div>
-                <h1 className="text-4xl font-black italic tracking-tighter text-[#FF0000] leading-none">
-                  motocar
-                </h1>
+             {/* Logo Motocar SVG Inline (Prevents broken images) */}
+             <div className="flex items-center gap-1">
+                <svg viewBox="0 0 240 50" className="h-10 sm:h-11 w-auto fill-[#FF0000]" xmlns="http://www.w3.org/2000/svg" aria-label="Motocar Logo">
+                    <g transform="skewX(-15)">
+                        <rect x="2" y="8" width="30" height="7" />
+                        <rect x="2" y="19" width="30" height="7" />
+                        <rect x="2" y="30" width="30" height="7" />
+                    </g>
+                    <text x="40" y="38" fontFamily="Arial, Helvetica, sans-serif" fontWeight="900" fontStyle="italic" fontSize="42" letterSpacing="-2">motocar</text>
+                </svg>
              </div>
-             <span className="text-[11px] font-bold text-[#FF0000] tracking-wide pl-7 -mt-0.5">
+             <span className="text-[11px] font-bold text-[#FF0000] tracking-wide pl-[45px] -mt-1 opacity-90">
                Há sempre uma perto de você!
              </span>
           </div>

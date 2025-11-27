@@ -22,8 +22,8 @@ const QrDisplay: React.FC<QrDisplayProps> = ({ url, fgColor = "#000000", bgColor
     // Clonar para modificar atributos para a versão de download sem afetar a UI
     const svgClone = svgOriginal.cloneNode(true) as SVGElement;
     
-    // Definir um tamanho fixo de alta resolução para o download
-    const size = 1024;
+    // Definir um tamanho fixo de alta resolução para o download (2048px para máxima nitidez)
+    const size = 2048;
     svgClone.setAttribute("width", `${size}px`);
     svgClone.setAttribute("height", `${size}px`);
     
@@ -32,7 +32,7 @@ const QrDisplay: React.FC<QrDisplayProps> = ({ url, fgColor = "#000000", bgColor
     
     const canvas = document.createElement("canvas");
     // Adicionar padding (margem branca ao redor)
-    const padding = size * 0.05; // 5% de padding
+    const padding = size * 0.1; // 10% de padding para respirar melhor
     const canvasSize = size + (padding * 2);
     
     canvas.width = canvasSize;
@@ -47,18 +47,30 @@ const QrDisplay: React.FC<QrDisplayProps> = ({ url, fgColor = "#000000", bgColor
 
     const img = new Image();
     
+    // Configurar crossOrigin para evitar problemas de taint no canvas
+    img.crossOrigin = "anonymous";
+
     img.onload = () => {
       // Desenhar a imagem centralizada
       ctx.drawImage(img, padding, padding, size, size);
       
-      const pngFile = canvas.toDataURL("image/png");
-      const downloadLink = document.createElement("a");
-      downloadLink.download = `motocar-qrcode-${Date.now()}.png`;
-      downloadLink.href = pngFile;
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
+      try {
+          const pngFile = canvas.toDataURL("image/png");
+          const downloadLink = document.createElement("a");
+          downloadLink.download = `motocar-qrcode-${Date.now()}.png`;
+          downloadLink.href = pngFile;
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+      } catch (e) {
+          console.error("Erro ao gerar PNG:", e);
+          alert("Não foi possível gerar a imagem para download. Tente novamente.");
+      }
       URL.revokeObjectURL(img.src);
+    };
+
+    img.onerror = () => {
+        alert("Erro ao processar o QR Code para imagem.");
     };
 
     // Usar Blob para garantir codificação correta
